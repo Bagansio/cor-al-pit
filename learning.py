@@ -11,6 +11,7 @@ from numpy import asarray
 
 
 
+
 ### function that returns true if ndim < 4 also tell some errors
 # example : If dataset is a video will have 4 dims and then ds.pixel_array will be a matrix
 def valid_imshow_data(data):
@@ -56,6 +57,7 @@ def render_images(ds):
 #from a set of images render a .avi video
 def render_video_from_images():
     image_folder = r'images'
+    image_folder = 'images'
     video_name = 'video.avi'
     images = [img for img in os.listdir(image_folder) if img.endswith(".png")]
     frame = cv2.imread(os.path.join(image_folder, images[0]))
@@ -77,3 +79,78 @@ def render_video_from_images():
 def load_images(image_folder):
     images = [img for img in os.listdir(image_folder) if img.endswith(".png")]
     return images
+import sys
+import os.path
+from os import path
+import argparse
+
+def dir_path(pathName):
+    if os.path.isdir(pathName):
+        return pathName
+    else:
+        raise NotADirectoryError(pathName)
+
+parser = argparse.ArgumentParser(
+    description='COR AL PIT is a program that given images determine if your heart is healthy or not.',
+    epilog="Example of use: python .\main.py -p 'your_path'")
+
+parser.add_argument('-p','--path', type=dir_path, help= "the path with the videos")
+
+def parse():
+    return parser.parse_args()
+
+def usage_help():
+    return parser.print_help()
+
+def main(path):
+    print(path)
+
+
+if __name__ == '__main__':
+    if(len(sys.argv) == 3):
+        parse()
+        main("XD")
+
+    else: 
+        usage_help()
+    video.release()
+
+
+# MAIN starts here
+
+path = "DICOM\\1003\\0W\DICOM OK\\2018-04-12-17-52-41.dcm"
+ds = dcmread(path)
+render_video_from_images()
+#render_images(ds)
+
+
+
+
+"""
+for f in onlyfiles:    
+    full_path = fpath+f
+    print(f"File path........: {full_path}")
+    ds = dcmread(full_path)
+    print(ds)
+
+    """
+
+"""
+ds = dcmread(fpath)
+
+print()
+print(f"File path........: {fpath}")
+print(f"SOP Class........: {ds.SOPClassUID} ({ds.SOPClassUID.name})")
+print()
+
+pat_name = ds.PatientName
+print(f"Patient's Name...: {pat_name.family_comma_given()}")
+print(f"Patient ID.......: {ds.PatientID}")
+print(f"Modality.........: {ds.Modality}")
+print(f"Study Date.......: {ds.StudyDate}")
+print(f"Image size.......: {ds.Rows} x {ds.Columns}")
+print(f"Pixel Spacing....: {ds.PixelSpacing}")
+
+
+print(ds.pixel_array)
+"""
