@@ -66,6 +66,33 @@ SV_NEGATIVEINTERVAL = 35.1-8.5
 CO_POSITIVEINTERVAL = 17.7+3.8
 CO_NEGATIVEINTERVAL = 17.7-3.8
 
+def checkInterval(negativeInterval, positiveInterval, value, name):
+    negativeInterval = round(negativeInterval, 2)
+    positiveInterval = round(positiveInterval, 2)
+    healthy = True
+    pr = str(name)+" value and interval : "
+
+    if value < negativeInterval:
+        pr = pr+"\x1b[1;31m"+str(value)+'\033[0;m'
+        healthy = False
+
+    pr = pr + " " + str(negativeInterval)
+    
+    if value >= negativeInterval and value <= positiveInterval:
+        pr = pr + " "+ ("\x1b[1;32m"+str(value)+'\033[0;m')
+
+    pr = pr + " " + str(positiveInterval)
+
+    if value > positiveInterval:
+        pr = pr + " "+ ("\x1b[1;31m"+str(value)+'\033[0;m')
+        healthy = False
+
+    print(pr)
+    if(healthy): print("VALUE IS" + "\x1b[1;32m"+ " HEALTHY!"+'\033[0;m') 
+    else: print("VALUE IS" + "\x1b[1;31m"+ " UNHEALTHY!"+'\033[0;m') 
+
+    return healthy
+
 
 
 

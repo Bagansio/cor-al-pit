@@ -10,7 +10,7 @@ def compareBW(BW):
     TRUE = Healthy (between the intervals) \n
     FALSE = Unhealthy (not between the invervals)
     """
-    return HIUtils.printMetric(HIUtils.BW_NEGATIVEINTERVAL, HIUtils.BW_POSITIVEINTERVAL, BW, "BW")
+    return HIUtils.checkInterval(HIUtils.BW_NEGATIVEINTERVAL, HIUtils.BW_POSITIVEINTERVAL, BW, "BW")
 
 
 # HR(b.p.m) 535+-75
@@ -21,7 +21,7 @@ def compareHR(HR):
     TRUE = Healthy (between the intervals) \n
     FALSE = Unhealthy (not between the invervals)
     """
-    return HIUtils.printMetric(HIUtils.HR_NEGATIVEINTERVAL, HIUtils.HR_POSITIVEINTERVAL, HR, "HR")
+    return HIUtils.checkInterval(HIUtils.HR_NEGATIVEINTERVAL, HIUtils.HR_POSITIVEINTERVAL, HR, "HR")
 
 
 # LV mass (mg) 96+-18
@@ -32,7 +32,7 @@ def compareLV_mass(LV_mass):
     TRUE = Healthy (between the intervals) \n
     FALSE = Unhealthy (not between the invervals)
     """
-    return HIUtils.printMetric(HIUtils.LVMASS_NEGATIVEINTERVAL, HIUtils.LVMASS_POSITIVEINTERVAL, LV_mass, "LV_mass")
+    return HIUtils.checkInterval(HIUtils.LVMASS_NEGATIVEINTERVAL, HIUtils.LVMASS_POSITIVEINTERVAL, LV_mass, "LV_mass")
 
 #LVPWd (mm) 0.79+-0.22
 def compareLVPWd(LVPWd):
@@ -42,7 +42,7 @@ def compareLVPWd(LVPWd):
     TRUE = Healthy (between the intervals) \n
     FALSE = Unhealthy (not between the invervals)
     """
-    return HIUtils.printMetric(HIUtils.LVPWD_NEGATIVEINTERVAL, HIUtils.LVPWD_POSITIVEINTERVAL, LVPWd, "LVPWd")
+    return HIUtils.checkInterval(HIUtils.LVPWD_NEGATIVEINTERVAL, HIUtils.LVPWD_POSITIVEINTERVAL, LVPWd, "LVPWd")
 
 #LVPWs (mm) 1.12+-0.33
 def compareLVPWs(LVPWs):
@@ -52,7 +52,7 @@ def compareLVPWs(LVPWs):
     TRUE = Healthy (between the intervals) \n
     FALSE = Unhealthy (not between the invervals)
     """
-    return HIUtils.printMetric(HIUtils.LVPWS_NEGATIVEINTERVAL, HIUtils.LVPWS_POSITIVEINTERVAL, LVPWs, "LVPWs")
+    return HIUtils.checkInterval(HIUtils.LVPWS_NEGATIVEINTERVAL, HIUtils.LVPWS_POSITIVEINTERVAL, LVPWs, "LVPWs")
 
 
 #LVIDs (mm) 2.20+-0.50
@@ -63,7 +63,7 @@ def compareLVIDs(LVIDs):
     TRUE = Healthy (between the intervals) \n
     FALSE = Unhealthy (not between the invervals)
     """
-    return HIUtils.printMetric(HIUtils.LVIDS_NEGATIVEINTERVAL, HIUtils.LVIDS_POSITIVEINTERVAL, LVIDs, "LVIDs")
+    return HIUtils.checkInterval(HIUtils.LVIDS_NEGATIVEINTERVAL, HIUtils.LVIDS_POSITIVEINTERVAL, LVIDs, "LVIDs")
 
 
 #LVIDd (mm) 3.69+-0.41
@@ -74,7 +74,7 @@ def compareLVIDd(LVIDd):
     TRUE = Healthy (between the intervals) \n
     FALSE = Unhealthy (not between the invervals)
     """
-    return HIUtils.printMetric(HIUtils.LVIDD_NEGATIVEINTERVAL, HIUtils.LVIDD_POSITIVEINTERVAL, LVIDd, "LVIDd")
+    return HIUtils.checkInterval(HIUtils.LVIDD_NEGATIVEINTERVAL, HIUtils.LVIDD_POSITIVEINTERVAL, LVIDd, "LVIDd")
 
 
 #IVSd (mm) 0.71+-0.15
@@ -85,7 +85,7 @@ def compareIVSd(IVSd):
     TRUE = Healthy (between the intervals) \n
     FALSE = Unhealthy (not between the invervals)
     """
-    return HIUtils.printMetric(HIUtils.IVSD_NEGATIVEINTERVAL, HIUtils.IVSD_POSITIVEINTERVAL, IVSd, "IVSd")
+    return HIUtils.checkInterval(HIUtils.IVSD_NEGATIVEINTERVAL, HIUtils.IVSD_POSITIVEINTERVAL, IVSd, "IVSd")
 
 
 #IVSs (mm) 0.97+-0.19
@@ -96,7 +96,7 @@ def compareIVSs(IVSs):
     TRUE = Healthy (between the intervals) \n
     FALSE = Unhealthy (not between the invervals)
     """
-    return HIUtils.printMetric(HIUtils.IVSS_NEGATIVEINTERVAL, HIUtils.IVSS_POSITIVEINTERVAL, IVSs, "IVSs")
+    return HIUtils.checkInterval(HIUtils.IVSS_NEGATIVEINTERVAL, HIUtils.IVSS_POSITIVEINTERVAL, IVSs, "IVSs")
 
 
 #LVESV (μL) 19.35+-11.30
@@ -107,7 +107,7 @@ def compareLVESV(LVESV):
     TRUE = Healthy (between the intervals) \n
     FALSE = Unhealthy (not between the invervals)
     """
-    return HIUtils.printMetric(HIUtils.LVESV_NEGATIVEINTERVAL, HIUtils.LVESV_POSITIVEINTERVAL, LVESV, "LVESV")
+    return HIUtils.checkInterval(HIUtils.LVESV_NEGATIVEINTERVAL, HIUtils.LVESV_POSITIVEINTERVAL, LVESV, "LVESV")
 
 
 #LVEDV (μL) 57.7+-16.5
@@ -118,7 +118,7 @@ def compareLVEDV(LVEDV):
     TRUE = Healthy (between the intervals) \n
     FALSE = Unhealthy (not between the invervals)
     """
-    return HIUtils.printMetric(HIUtils.LVEDV_NEGATIVEINTERVAL, HIUtils.LVEDV_POSITIVEINTERVAL, LVEDV, "LVEDV")
+    return HIUtils.checkInterval(HIUtils.LVEDV_NEGATIVEINTERVAL, HIUtils.LVEDV_POSITIVEINTERVAL, LVEDV, "LVEDV")
 
 
 #EF(%) 71+-11
@@ -129,7 +129,7 @@ def compareEF(EF):
     TRUE = Healthy (between the intervals) \n
     FALSE = Unhealthy (not between the invervals)
     """
-    return HIUtils.printMetric(HIUtils.EF_NEGATIVEINTERVAL, HIUtils.EF_POSITIVEINTERVAL, EF, "EF")
+    return HIUtils.checkInterval(HIUtils.EF_NEGATIVEINTERVAL, HIUtils.EF_POSITIVEINTERVAL, EF, "EF")
 
 
 #FS(%) 43+-9
@@ -140,7 +140,7 @@ def compareFS(FS):
     TRUE = Healthy (between the intervals) \n
     FALSE = Unhealthy (not between the invervals)
     """
-    return HIUtils.printMetric(HIUtils.FS_NEGATIVEINTERVAL, HIUtils.FS_POSITIVEINTERVAL, FS, "FS")
+    return HIUtils.checkInterval(HIUtils.FS_NEGATIVEINTERVAL, HIUtils.FS_POSITIVEINTERVAL, FS, "FS")
 
 
 #SV(μL) 35.1+-8.5
@@ -151,7 +151,7 @@ def compareSV(SV):
     TRUE = Healthy (between the intervals) \n
     FALSE = Unhealthy (not between the invervals)
     """
-    return HIUtils.printMetric(HIUtils.SV_NEGATIVEINTERVAL, HIUtils.SV_POSITIVEINTERVAL, SV, "SV")
+    return HIUtils.checkInterval(HIUtils.SV_NEGATIVEINTERVAL, HIUtils.SV_POSITIVEINTERVAL, SV, "SV")
 
 
 #CO(mL/min) 17.7+-3.8
@@ -162,7 +162,7 @@ def compareCO(CO):
     TRUE = Healthy (between the intervals) \n
     FALSE = Unhealthy (not between the invervals)
     """
-    return HIUtils.printMetric(HIUtils.CO_NEGATIVEINTERVAL, HIUtils.CO_POSITIVEINTERVAL, CO, "CO")
+    return HIUtils.checkInterval(HIUtils.CO_NEGATIVEINTERVAL, HIUtils.CO_POSITIVEINTERVAL, CO, "CO")
 
 def compareAll():
     """
