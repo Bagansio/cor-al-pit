@@ -9,3 +9,17 @@ Done with love by
 | Alex Moa       | Bagansio        | 
 | Cristian Mesa  |     CristianMesaSanchez    | 
 | Artur Farriols | arturfarriols        |
+
+
+### TO DO
+
+
+- [ ] main.py
+- [X] Load DICOM files
+- [X] Load from DICOM file a video
+- [X] GET contours
+- [X] GET Heart Rate
+- [ ] GET IVS
+- [ ] GET LVID
+- [ ] GET LVPW
+- [ ] GET LVAW
