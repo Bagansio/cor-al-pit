@@ -6,6 +6,10 @@ from pydicom.data import get_testdata_file
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2
+from PIL import Image
+from numpy import asarray
+
+
 
 
 ### function that returns true if ndim < 4 also tell some errors
@@ -52,18 +56,63 @@ def render_images(ds):
 
 #from a set of images render a .avi video
 def render_video_from_images():
+    image_folder = r'images'
     image_folder = 'images'
     video_name = 'video.avi'
     images = [img for img in os.listdir(image_folder) if img.endswith(".png")]
     frame = cv2.imread(os.path.join(image_folder, images[0]))
     height, width, layers = frame.shape
 
+
+    print("creating video")
     video = cv2.VideoWriter(video_name, 0, 10, (width,height))
 
     for image in images:
         video.write(cv2.imread(os.path.join(image_folder, image)))
 
     cv2.destroyAllWindows()
+    print("releasing video")
+    video.release()
+    print("done")
+
+
+def load_images(image_folder):
+    images = [img for img in os.listdir(image_folder) if img.endswith(".png")]
+    return images
+import sys
+import os.path
+from os import path
+import argparse
+
+def dir_path(pathName):
+    if os.path.isdir(pathName):
+        return pathName
+    else:
+        raise NotADirectoryError(pathName)
+
+parser = argparse.ArgumentParser(
+    description='COR AL PIT is a program that given images determine if your heart is healthy or not.',
+    epilog="Example of use: python .\main.py -p 'your_path'")
+
+parser.add_argument('-p','--path', type=dir_path, help= "the path with the videos")
+
+def parse():
+    return parser.parse_args()
+
+def usage_help():
+    return parser.print_help()
+
+def main(path):
+    print(path)
+
+
+if __name__ == '__main__':
+    if(len(sys.argv) == 3):
+        parse()
+        main("XD")
+
+    else: 
+        usage_help()
     video.release()
 
 
