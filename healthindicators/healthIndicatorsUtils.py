@@ -76,8 +76,28 @@ BOLD_TEXT = "\033[1m"
 RED_TEXT = "\x1b[1;31m"
 GREEN_TEXT = "\x1b[1;32m"
 
+#Health indicators names
+ID = "ID"
+BW_NAME = "BW"
+HR_NAME = "HR"
+LVMASS_NAME = "LV_mass"
+LVPWD_NAME = "LVPWd"
+LVPWS_NAME = "LVPWs"
+LVIDS_NAME = "LVIDs"
+LVIDD_NAME = "LVIDd"
+IVSD_NAME = "IVSd"
+IVSS_NAME = "IVSs"
+LVESV_NAME = "LVESV"
+LVEDV_NAME = "LVEDV"
+EF_NAME = "EF"
+FS_NAME = "FS"
+SV_NAME = "SV"
+CO_NAME = "CO"
+UNHEALTHY_INDICATORS = "Unhealthy indicators counter"
+HEALTHY_INDICATORS = "Healhy indicators counter"
 
 
+#Check the interval to know if is healthy or unhealthy and prints it
 def checkInterval(negativeInterval, positiveInterval, value, name):
     negativeInterval = round(negativeInterval, 2)
     positiveInterval = round(positiveInterval, 2)
@@ -106,3 +126,12 @@ def checkInterval(negativeInterval, positiveInterval, value, name):
     
 
     return healthy
+
+#Print de total of healthy and unhealthy indicators and if the patient has a healthy or unhealthy heart
+def printRecountIndicators(healthyCont, unhealthyCont):
+    print("TOTAL HEALTHY INDICATORS: "+ str(healthyCont))
+    print("TOTAL UNHEALTHY INDICATORS: "+ str(unhealthyCont))
+
+    if(unhealthyCont >= MINIMUM_INDICATORS_UNHEALTHY_HEART):
+        print("PATIENT HAS A"+RED_TEXT+" UNHEALTHY"+NORMAL_TEXT+" HEART" )
+    else: print("PATIENT HAS A"+GREEN_TEXT+" HEALTHY"+NORMAL_TEXT+" HEART" )

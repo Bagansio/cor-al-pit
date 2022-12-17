@@ -221,14 +221,9 @@ def compareAll(BW, HR, LV_mass, LVPWd, LVPWs, LVIDs, LVIDd, IVSd, IVSs, LVESV, L
     if compareCO(CO): healthyCont = healthyCont + 1
     else: unhealthyCont = unhealthyCont +1
 
-    print("TOTAL HEALTHY INDICATORS: "+ str(healthyCont))
-    print("TOTAL UNHEALTHY INDICATORS: "+ str(unhealthyCont))
+    HIUtils.printRecountIndicators(healthyCont, unhealthyCont)
 
-    if(unhealthyCont >= HIUtils.MINIMUM_INDICATORS_UNHEALTHY_HEART):
-        print("PATIENT HAS A"+HIUtils.RED_TEXT+" UNHEALTHY"+HIUtils.NORMAL_TEXT+" HEART" )
-    else: print("PATIENT HAS A"+HIUtils.GREEN_TEXT+" HEALTHY"+HIUtils.NORMAL_TEXT+" HEART" )
-
-    HIUtils.healthInformationToExcel(BW, HR, LV_mass, LVPWd, LVPWs, LVIDs, LVIDd, IVSd, IVSs, LVESV, LVEDV, EF, FS, SV, CO)
+    DMUtils.healthInformationToExcel(BW, HR, LV_mass, LVPWd, LVPWs, LVIDs, LVIDd, IVSd, IVSs, LVESV, LVEDV, EF, FS, SV, CO, healthyCont, unhealthyCont)
 
 
 
