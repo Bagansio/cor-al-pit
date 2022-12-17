@@ -106,12 +106,3 @@ def checkInterval(negativeInterval, positiveInterval, value, name):
     
 
     return healthy
-
-
-
-
-
-
-
-
-
