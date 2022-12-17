@@ -1,4 +1,5 @@
 import healthIndicatorsUtils as HIUtils
+import dataManagerUtils as DMUtils
 
 ####### COMPARATORS: 3 OR MORE = UNHEALTHY HEART ####### 
 
@@ -164,7 +165,7 @@ def compareCO(CO):
     """
     return HIUtils.checkInterval(HIUtils.CO_NEGATIVEINTERVAL, HIUtils.CO_POSITIVEINTERVAL, CO, "CO")
 
-def compareAll():
+def compareAll(BW, HR, LV_mass, LVPWd, LVPWs, LVIDs, LVIDd, IVSd, IVSs, LVESV, LVEDV, EF, FS, SV, CO):
     """
     Compare all the health indicators, if number of unhealthy indicators are 3 or more the heart is unhealthy.
 
@@ -172,7 +173,65 @@ def compareAll():
     TRUE = Healthy heart // FALSE = Unhealthy heart \n
     A list with all the comparations done and if the intervals are healthy or unhealthy
     """
-    return
+    unhealthyCont = 0
+    healthyCont = 0 
 
-print(compareCO(21.70))
+    if(compareBW(BW)): healthyCont = healthyCont + 1
+    else: unhealthyCont = unhealthyCont +1
+
+    if compareHR(HR): healthyCont = healthyCont + 1
+    else: unhealthyCont = unhealthyCont +1
+    
+    if compareLV_mass(LV_mass): healthyCont = healthyCont + 1
+    else: unhealthyCont = unhealthyCont +1
+
+    if compareLVPWd(LVPWd): healthyCont = healthyCont + 1
+    else: unhealthyCont = unhealthyCont +1
+
+    if compareLVPWs(LVPWs): healthyCont = healthyCont + 1
+    else: unhealthyCont = unhealthyCont +1
+
+    if compareLVIDs(LVIDs): healthyCont = healthyCont + 1
+    else: unhealthyCont = unhealthyCont +1
+
+    if compareLVIDd(LVIDd): healthyCont = healthyCont + 1
+    else: unhealthyCont = unhealthyCont +1
+
+    if compareIVSd(IVSd): healthyCont = healthyCont + 1
+    else: unhealthyCont = unhealthyCont +1
+
+    if compareIVSs(IVSs): healthyCont = healthyCont + 1
+    else: unhealthyCont = unhealthyCont +1
+
+    if compareLVESV(LVESV): healthyCont = healthyCont + 1
+    else: unhealthyCont = unhealthyCont +1
+
+    if compareLVEDV(LVEDV): healthyCont = healthyCont + 1
+    else: unhealthyCont = unhealthyCont +1
+
+    if compareEF(EF): healthyCont = healthyCont + 1
+    else: unhealthyCont = unhealthyCont +1
+
+    if compareFS(FS): healthyCont = healthyCont + 1
+    else: unhealthyCont = unhealthyCont +1
+
+    if compareSV(SV): healthyCont = healthyCont + 1
+    else: unhealthyCont = unhealthyCont +1
+
+    if compareCO(CO): healthyCont = healthyCont + 1
+    else: unhealthyCont = unhealthyCont +1
+
+    print("TOTAL HEALTHY INDICATORS: "+ str(healthyCont))
+    print("TOTAL UNHEALTHY INDICATORS: "+ str(unhealthyCont))
+
+    if(unhealthyCont >= HIUtils.MINIMUM_INDICATORS_UNHEALTHY_HEART):
+        print("PATIENT HAS A"+HIUtils.RED_TEXT+" UNHEALTHY"+HIUtils.NORMAL_TEXT+" HEART" )
+    else: print("PATIENT HAS A"+HIUtils.GREEN_TEXT+" HEALTHY"+HIUtils.NORMAL_TEXT+" HEART" )
+
+    HIUtils.healthInformationToExcel(BW, HR, LV_mass, LVPWd, LVPWs, LVIDs, LVIDd, IVSd, IVSs, LVESV, LVEDV, EF, FS, SV, CO)
+
+
+
+
+compareAll(1,500,1,1,1,1.8,3.5,0.7,1,12,50,61,35,30,15)
 
