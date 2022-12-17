@@ -19,26 +19,80 @@ pytesseract.pytesseract.tesseract_cmd = os.getenv('TESSERACT_EXE')
 class DataForm: 
     pass
 
+
+def find_upper_internal_wall():
+    found = False
+    exists = False
+    while (not found and exists ):
+        exists = False
+
+    return 0
+
+def detect_color(rgb, image):
+    img = image.convert('RGBA')
+    data = img.getdata()
+
+    for item in data:
+        if item[0] == rgb[0] and item[1] == rgb[1] and item[2] == rgb[2]:
+            return True
+    return False
+
 def draw_countours(slice):
-        cv2.imshow('Binary image', slice)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+    #cv2.imshow('Binary image', slice)
+    #cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
-        image_gray = cv2.cvtColor(slice, cv2.COLOR_BGR2GRAY)
+    image_gray = cv2.cvtColor(slice, cv2.COLOR_BGR2GRAY)
 
-        ret, thresh = cv2.threshold(image_gray, 120, 255, cv2.THRESH_BINARY)
-        cv2.imshow('Binary image', thresh) 
-        cv2.waitKey(0)
-        #cv2.imwrite('image_thres1.jpg', thresh)
-        cv2.destroyAllWindows()
-        contours, hierarchy = cv2.findContours(image=thresh, mode=cv2.RETR_TREE, method=cv2.CHAIN_APPROX_NONE)
+    ret, thresh = cv2.threshold(image_gray, 100, 255, cv2.THRESH_BINARY)
+    #cv2.imshow('Binary image', thresh) 
+    #cv2.waitKey(0)
+    #cv2.imwrite('image_thres1.jpg', thresh)
+    cv2.destroyAllWindows()
+    contours, hierarchy = cv2.findContours(image=thresh, mode=cv2.RETR_TREE, method=cv2.CHAIN_APPROX_NONE)
+    
+    slice_copy = slice
+    cv2.drawContours(image=slice_copy, contours=contours, contourIdx=-1, color=(0, 255, 0), thickness=2, lineType=cv2.LINE_AA)
+    #cv2.imshow('None approximation', slice_copy)
+    #cv2.waitKey(0)
+    #cv2.imwrite(f'images\\contours_none_image{i:03n}.jpg', slice_copy)
+    cv2.destroyAllWindows()
         
-        slice_copy = slice
-        cv2.drawContours(image=slice_copy, contours=contours, contourIdx=-1, color=(0, 255, 0), thickness=2, lineType=cv2.LINE_AA)
-        cv2.imshow('None approximation', slice_copy)
-        cv2.waitKey(0)
-        #cv2.imwrite(f'images\\contours_none_image{i:03n}.jpg', slice_copy)
-        cv2.destroyAllWindows()
+    cv2.line(slice_copy, (650,800), (650,0), (0,255,255), 1) #650,525 650,300
+    cv2.imshow('None approximation', slice_copy)
+    cv2.waitKey(0)
+
+    slice_copy_image = Image.fromarray(slice_copy)
+
+
+    upper_internal_wall = find_upper_internal_wall();
+    upper_external_wall = (-1, -1);
+    lower_internal_wall = (-1, -1);
+    lower_external_wall = (-1, -1);
+
+
+
+    upper_box = (550, 200, 750, 350)
+    lower_box = (550, 475, 750, 625)
+    upper_slice_crop = slice_copy_image.crop(upper_box)
+    lower_slice_crop = slice_copy_image.crop(lower_box)
+
+    found = False
+    i = 0
+    height = slice_copy_image.height
+    width = slice_copy_image.width
+    print(height)
+    print(width)
+
+    if (detect_color((0, 255, 0), slice_copy_image)):
+        found = True
+        print ("Yepa")
+
+
+    #cv2.imshow('None approximation', asarray(upper_slice_crop))
+    #cv2.waitKey(0)
+    #cv2.imshow('None approximation', asarray(lower_slice_crop))
+    #cv2.waitKey(0)    
 
 
 def get_heart_rate(img):
