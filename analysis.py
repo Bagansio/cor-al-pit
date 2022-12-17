@@ -25,32 +25,50 @@ class DataForm:
 
 def detect_color(rgb, image, lower_row, max_row, lower_col, max_col, up, right):
     img = image.convert('RGBA')
-    data = img.getdata()
 
     pixel_position = []
-    found = False
 
     print(max_col)
     print(max_row)
 
-    for row in range(max_row, lower_row, -1):
-        print(row)
-        if (right):
-            for col in range(lower_col, max_col):
-                #print(col)
-                pixel = img.getpixel((col, row))
-                #print(pixel)
-                if (pixel[0] == rgb[0] and pixel[1] == rgb[1] and pixel[2] == rgb[2]):
-                    pixel_position = (col, row)
-                    return pixel_position
-        if (not right):
-            for col in range(max_col, lower_col, -1):
-                #print(col)
-                pixel = img.getpixel((col, row))
-                #print(pixel)
-                if (pixel[0] == rgb[0] and pixel[1] == rgb[1] and pixel[2] == rgb[2]):
-                    pixel_position = (col, row)
-                    return pixel_position
+    if (up):
+        for row in range(max_row, lower_row, -1):
+            #print(row)
+            if (right):
+                for col in range(lower_col, max_col):
+                    #print(col)
+                    pixel = img.getpixel((col, row))
+                    #print(pixel)
+                    if (pixel[0] == rgb[0] and pixel[1] == rgb[1] and pixel[2] == rgb[2]):
+                        pixel_position = (col, row)
+                        return pixel_position
+            if (not right):
+                for col in range(max_col, lower_col, -1):
+                    #print(col)
+                    pixel = img.getpixel((col, row))
+                    #print(pixel)
+                    if (pixel[0] == rgb[0] and pixel[1] == rgb[1] and pixel[2] == rgb[2]):
+                        pixel_position = (col, row)
+                        return pixel_position
+    else:
+        for row in range(lower_row, max_row):
+            #print(row)
+            if (right):
+                for col in range(lower_col, max_col):
+                    #print(col)
+                    pixel = img.getpixel((col, row))
+                    #print(pixel)
+                    if (pixel[0] == rgb[0] and pixel[1] == rgb[1] and pixel[2] == rgb[2]):
+                        pixel_position = (col, row)
+                        return pixel_position
+            if (not right):
+                for col in range(max_col, lower_col, -1):
+                    #print(col)
+                    pixel = img.getpixel((col, row))
+                    #print(pixel)
+                    if (pixel[0] == rgb[0] and pixel[1] == rgb[1] and pixel[2] == rgb[2]):
+                        pixel_position = (col, row)
+                        return pixel_position            
 
     return pixel_position
 
@@ -59,16 +77,100 @@ def detect_color(rgb, image, lower_row, max_row, lower_col, max_col, up, right):
             #return True
     #return False
 
+def detect_external_color(image, upper_internal_wall, rgb, up):
+    img = image.convert('RGBA')
+    
+    first_row = upper_internal_wall[1]
+    max_col = upper_internal_wall[0] + 3
+    lower_col = upper_internal_wall[0] - 3
+    pixel_position = []
 
-def find_upper_internal_wall(slice_copy_image):
-    found = False
-    rgb = (0, 255, 0)
+    if (up):
+        last_row = upper_internal_wall[1] - 150
+        for row in range(first_row, last_row, -1):
+            for col in range(lower_col, max_col):
+                pixel = img.getpixel((col, row))
+                if (pixel[0] == rgb[0] and pixel[1] == rgb[1] and pixel[2] == rgb[2]):
+                    if (check_if_external_wall(img, rgb, row - 1, row - 10, max_col - 1, lower_col + 1, True)):
+                        print("Checking")
+                        pixel_position = (col, row)
+                        return pixel_position
+    else:
+        last_row = upper_internal_wall[1] + 150
+        for row in range(first_row, last_row):
+            for col in range(lower_col, max_col):
+                pixel = img.getpixel((col, row))
+                if (pixel[0] == rgb[0] and pixel[1] == rgb[1] and pixel[2] == rgb[2]):
+                    if (check_if_external_wall(img, rgb, row + 1, row + 10, max_col - 1, lower_col + 1, False)):
+                        print("Checking")
+                        pixel_position = (col, row)
+                        return pixel_position        
+
+    return pixel_position
+
+
+def check_if_external_wall(img, rgb, actual_row, last_row, max_col, lower_col, up):
+    counter = 0
+    is_external_wall = False
+
+    if (up):
+        for row in range(actual_row, last_row, -1):
+            pixel_in_line = False
+            for col in range(lower_col, max_col):
+                pixel = img.getpixel((col, row))
+                if (pixel[0] == rgb[0] and pixel[1] == rgb[1] and pixel[2] == rgb[2]):
+                    if (not pixel_in_line):
+                        counter = counter + 1
+                    pixel_in_line = True
+    else:
+        for row in range(actual_row, last_row):
+            pixel_in_line = False
+            for col in range(lower_col, max_col):
+                pixel = img.getpixel((col, row))
+                if (pixel[0] == rgb[0] and pixel[1] == rgb[1] and pixel[2] == rgb[2]):
+                    if (not pixel_in_line):
+                        counter = counter + 1
+                    pixel_in_line = True
+
+    if (counter >= 4):
+        is_external_wall = True
+    
+    return is_external_wall
+                
+
+
+
+def find_upper_internal_wall(slice_copy_image, rgb):
     pixel_position = detect_color(rgb, slice_copy_image, 280, 335, 650, 700, True, True)
     if (not pixel_position): 
         print("Yepa")
         pixel_position = detect_color(rgb, slice_copy_image, 280, 335, 600, 650, True, False)
 
     print(pixel_position)
+
+    return pixel_position
+
+def find_lower_internal_wall(slice_copy_image, rgb):
+    pixel_position = detect_color(rgb, slice_copy_image, 500, 550, 650, 700, False, True)
+    if (not pixel_position):
+        print("Yepa")
+        pixel_position = detect_color(rgb, slice_copy_image, 500, 550, 600, 650, False, False)
+    
+    return pixel_position
+
+def find_upper_external_wall(slice_copy_image, rgb, upper_internal_wall):
+    upper_internal_wall_list = list(upper_internal_wall)
+    upper_internal_wall_list[1] = upper_internal_wall_list[1] - 20
+    print(upper_internal_wall_list)
+    pixel_position = detect_external_color(slice_copy_image, upper_internal_wall_list, rgb, True)
+
+    return pixel_position
+
+def find_lower_external_wall(slice_copy_image, rgb, lower_internal_wall):
+    lower_internal_wall_list = list(lower_internal_wall)
+    lower_internal_wall_list[1] = lower_internal_wall_list[1] + 15
+    print(lower_internal_wall_list)
+    pixel_position = detect_external_color(slice_copy_image, lower_internal_wall_list, rgb, False)
 
     return pixel_position
 
@@ -94,21 +196,28 @@ def draw_countours(slice):
     cv2.destroyAllWindows()
         
     cv2.line(slice_copy, (650,800), (650,0), (0,255,255), 1) #650,525 650,300
-    cv2.line(slice_copy, (600,525), (700,525), (0,255,255), 1)
+    cv2.line(slice_copy, (600,500), (700,500), (0,255,255), 1)
     cv2.line(slice_copy, (600,335), (700,335), (0,255,255), 1)
     cv2.imshow('None approximation', slice_copy)
     cv2.waitKey(0)
 
     slice_copy_image = Image.fromarray(slice_copy)
+    rgb = (0, 255, 0)
 
 
-    upper_internal_wall = find_upper_internal_wall(slice_copy_image);
+    upper_internal_wall = find_upper_internal_wall(slice_copy_image, rgb)
     print(upper_internal_wall)
-    upper_external_wall = (-1, -1);
-    lower_internal_wall = (-1, -1);
-    lower_external_wall = (-1, -1);
+    upper_external_wall = find_upper_external_wall(slice_copy_image, rgb, upper_internal_wall)
+    print(upper_external_wall)
+    lower_internal_wall = find_lower_internal_wall(slice_copy_image, rgb)
+    print(lower_internal_wall)
+    lower_external_wall = find_lower_external_wall(slice_copy_image, rgb, lower_internal_wall)
+    print(lower_external_wall)
 
     cv2.line(slice_copy, (0,0), upper_internal_wall, (0,255,255), 1)
+    cv2.line(slice_copy, (0,0), lower_internal_wall, (0,255,255), 1)
+    cv2.line(slice_copy, (0,0), upper_external_wall, (0,0,255), 1)
+    cv2.line(slice_copy, (0,0), lower_external_wall, (0,0,255), 1)
     cv2.imshow('None approximation', slice_copy)
     cv2.waitKey(0)
 
@@ -206,6 +315,6 @@ def analyze_video(path):
 video = "DICOM\\1003\\0W\\DICOM OK\\2018-04-12-17-53-27.dcm"
 ds = dcmread(video)
 print()
-#analyze_video(video)
+analyze_video(video)
 
 
