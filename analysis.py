@@ -12,6 +12,8 @@ import pytesseract
 from itertools import chain
 from dotenv import load_dotenv
 import operator
+import time
+
 
 
 load_dotenv()
@@ -21,7 +23,7 @@ pytesseract.pytesseract.tesseract_cmd = os.getenv('TESSERACT_EXE')
 class DataForm: 
     pass
 
-def detect_color(rgb, image, lower_row, max_row, lower_col, max_col):
+def detect_color(rgb, image, lower_row, max_row, lower_col, max_col, up, right):
     img = image.convert('RGBA')
     data = img.getdata()
 
@@ -31,15 +33,24 @@ def detect_color(rgb, image, lower_row, max_row, lower_col, max_col):
     print(max_col)
     print(max_row)
 
-    for row in range((max_row, lower_row, -1) and not found):
+    for row in range(max_row, lower_row, -1):
         print(row)
-        for col in range((lower_col, max_col) and not found):
-            print(col)
-            pixel = img.getpixel((col, row))
-            print(pixel)
-            if (pixel[0] == rgb[0] and pixel[1] == rgb[1] and pixel[2] == rgb[2]):
-                found = True
-                pixel_position = (row, col)
+        if (right):
+            for col in range(lower_col, max_col):
+                #print(col)
+                pixel = img.getpixel((col, row))
+                #print(pixel)
+                if (pixel[0] == rgb[0] and pixel[1] == rgb[1] and pixel[2] == rgb[2]):
+                    pixel_position = (col, row)
+                    return pixel_position
+        if (not right):
+            for col in range(max_col, lower_col, -1):
+                #print(col)
+                pixel = img.getpixel((col, row))
+                #print(pixel)
+                if (pixel[0] == rgb[0] and pixel[1] == rgb[1] and pixel[2] == rgb[2]):
+                    pixel_position = (col, row)
+                    return pixel_position
 
     return pixel_position
 
@@ -52,10 +63,10 @@ def detect_color(rgb, image, lower_row, max_row, lower_col, max_col):
 def find_upper_internal_wall(slice_copy_image):
     found = False
     rgb = (0, 255, 0)
-    pixel_position = detect_color(rgb, slice_copy_image, 280, 335, 525, 575)
+    pixel_position = detect_color(rgb, slice_copy_image, 280, 335, 650, 700, True, True)
     if (not pixel_position): 
         print("Yepa")
-        detect_color(rgb, slice_copy_image, 280, 335, 475, 525)
+        pixel_position = detect_color(rgb, slice_copy_image, 280, 335, 600, 650, True, False)
 
     print(pixel_position)
 
@@ -92,11 +103,14 @@ def draw_countours(slice):
 
 
     upper_internal_wall = find_upper_internal_wall(slice_copy_image);
+    print(upper_internal_wall)
     upper_external_wall = (-1, -1);
     lower_internal_wall = (-1, -1);
     lower_external_wall = (-1, -1);
 
-
+    cv2.line(slice_copy, (0,0), upper_internal_wall, (0,255,255), 1)
+    cv2.imshow('None approximation', slice_copy)
+    cv2.waitKey(0)
 
     upper_box = (550, 200, 750, 350)
     lower_box = (550, 475, 750, 625)
@@ -178,8 +192,8 @@ def analyze_video(path):
     data = DataForm()
     heart_rate_array = []
     for i, slice in enumerate(ds.pixel_array):
-        if i % 20 == 0:
-            heart_rate_array.append(get_heart_rate(slice))
+        #if i % 20 == 0:
+            #heart_rate_array.append(get_heart_rate(slice))
         if i < 5:
             draw_countours(slice)
     data.hr = numpy.mean(heart_rate_array)
