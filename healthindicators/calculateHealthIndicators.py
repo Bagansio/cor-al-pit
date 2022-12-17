@@ -1,4 +1,4 @@
-import healthindicators.healthIndicatorsUtils as HIUtils
+import healthIndicatorsUtils as HIUtils
 
 ####### CALCULATIONS TO KNOW THE HEALTH INDICATORS #######
 
@@ -7,21 +7,21 @@ def calculateLVESV(LVIDs):
     """
     CALCULATE LVESV = [7/(2.4+LVIDs)]*(LVIDs^3)
 
-    Returns LVESV value
+    Returns LVESV value and it symbol (μL)
     """
     LVESVCalculation = (7/(2.4+LVIDs))*(LVIDs**3)
 
-    return LVESVCalculation
+    return {LVESVCalculation, HIUtils.MICROLITER}
 
 # LVEDV = [7/(2.4+LVIDd)]*(LVIDd^3)
 def calculateLVEDV(LVIDd):
     """
     CALCULATE LVEDV = [7/(2.4+LVIDd)]*(LVIDd^3)
 
-    Returns LVEDV value
+    Returns LVEDV value and it symbol (μL)
     """
     LVEDVCalculation = (7/(2.4+LVIDd))*(LVIDd**3)
-    return LVEDVCalculation
+    return {LVEDVCalculation, HIUtils.MICROLITER}
 
 # FS(%) = (LVIDd-LVIDs)/LVIDd*100
 def calculateFS(LVIDd, LVIDs):
