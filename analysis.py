@@ -11,6 +11,8 @@ from numpy import asarray
 import pytesseract
 from itertools import chain
 from dotenv import load_dotenv
+import operator
+
 
 load_dotenv()
 pytesseract.pytesseract.tesseract_cmd = os.getenv('TESSERACT_EXE')
@@ -19,23 +21,45 @@ pytesseract.pytesseract.tesseract_cmd = os.getenv('TESSERACT_EXE')
 class DataForm: 
     pass
 
-
-def find_upper_internal_wall():
-    found = False
-    exists = False
-    while (not found and exists ):
-        exists = False
-
-    return 0
-
-def detect_color(rgb, image):
+def detect_color(rgb, image, lower_row, max_row, lower_col, max_col):
     img = image.convert('RGBA')
     data = img.getdata()
 
-    for item in data:
-        if item[0] == rgb[0] and item[1] == rgb[1] and item[2] == rgb[2]:
-            return True
-    return False
+    pixel_position = []
+    found = False
+
+    print(max_col)
+    print(max_row)
+
+    for row in range((max_row, lower_row, -1) and not found):
+        print(row)
+        for col in range((lower_col, max_col) and not found):
+            print(col)
+            pixel = img.getpixel((col, row))
+            print(pixel)
+            if (pixel[0] == rgb[0] and pixel[1] == rgb[1] and pixel[2] == rgb[2]):
+                found = True
+                pixel_position = (row, col)
+
+    return pixel_position
+
+    #for item in data:
+        #if item[0] == rgb[0] and item[1] == rgb[1] and item[2] == rgb[2]:
+            #return True
+    #return False
+
+
+def find_upper_internal_wall(slice_copy_image):
+    found = False
+    rgb = (0, 255, 0)
+    pixel_position = detect_color(rgb, slice_copy_image, 280, 335, 525, 575)
+    if (not pixel_position): 
+        print("Yepa")
+        detect_color(rgb, slice_copy_image, 280, 335, 475, 525)
+
+    print(pixel_position)
+
+    return pixel_position
 
 def draw_countours(slice):
     #cv2.imshow('Binary image', slice)
@@ -59,13 +83,15 @@ def draw_countours(slice):
     cv2.destroyAllWindows()
         
     cv2.line(slice_copy, (650,800), (650,0), (0,255,255), 1) #650,525 650,300
+    cv2.line(slice_copy, (600,525), (700,525), (0,255,255), 1)
+    cv2.line(slice_copy, (600,335), (700,335), (0,255,255), 1)
     cv2.imshow('None approximation', slice_copy)
     cv2.waitKey(0)
 
     slice_copy_image = Image.fromarray(slice_copy)
 
 
-    upper_internal_wall = find_upper_internal_wall();
+    upper_internal_wall = find_upper_internal_wall(slice_copy_image);
     upper_external_wall = (-1, -1);
     lower_internal_wall = (-1, -1);
     lower_external_wall = (-1, -1);
@@ -77,16 +103,11 @@ def draw_countours(slice):
     upper_slice_crop = slice_copy_image.crop(upper_box)
     lower_slice_crop = slice_copy_image.crop(lower_box)
 
-    found = False
-    i = 0
     height = slice_copy_image.height
     width = slice_copy_image.width
     print(height)
     print(width)
 
-    if (detect_color((0, 255, 0), slice_copy_image)):
-        found = True
-        print ("Yepa")
 
 
     #cv2.imshow('None approximation', asarray(upper_slice_crop))
