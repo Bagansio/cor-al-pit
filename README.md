@@ -8,4 +8,4 @@ Done with love by
 |----------------|-----------------|
 | Alex Moa       | Bagansio        | 
 | Cristian Mesa  |     CristianMesaSanchez    | 
-| Artur Farriols | arutrfarriols        |
+| Artur Farriols | arturfarriols        |
