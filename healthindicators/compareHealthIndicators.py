@@ -1,15 +1,16 @@
+import healthIndicatorsUtils as HIUtils
 
 ####### COMPARATORS: 3 OR MORE = UNHEALTHY HEART ####### 
 
 # BW (g) 25.7+-3.6
-def compareBW():
+def compareBW(BW):
     """
     Compare if BW (g) 25.7+-3.6
 
     TRUE = Healthy (between the intervals) \n
     FALSE = Unhealthy (not between the invervals)
     """
-    return
+    return 
 
 # HR(b.p.m) 535+-75
 def compareHR():
@@ -160,4 +161,6 @@ def compareAll():
     A list with all the comparations done and if the intervals are healthy or unhealthy
     """
     return
+
+print(HIUtils.BW_NEGATIVEINTERVAL)
 
