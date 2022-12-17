@@ -1,6 +1,6 @@
 ## "Cor al pit" challenge project for the hackathon bitsxlaMarató 
 
-Done
+Done with love by
 
 ## TEAM MEMBERS
 
