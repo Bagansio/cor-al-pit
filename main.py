@@ -6,6 +6,8 @@ from pydicom.data import get_testdata_file
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2
+from PIL import Image
+from numpy import asarray
 
 
 ### function that returns true if ndim < 4 also tell some errors
@@ -47,32 +49,72 @@ def map_dicom():
 def render_images(ds):
     for i, slice in enumerate(ds.pixel_array):
         plt.imshow(slice)
-        plt.savefig(f'images\\slice_{i:03n}.png')
+        plt.savefig(f'C:\\Users\\farri\\OneDrive\\Escriptori\\Hackaton\\images\\slice_{i:03n}.png')
 
 
 #from a set of images render a .avi video
 def render_video_from_images():
-    image_folder = 'images'
+    image_folder = r'C:\Users\farri\OneDrive\Escriptori\Hackaton\images'
     video_name = 'video.avi'
     images = [img for img in os.listdir(image_folder) if img.endswith(".png")]
     frame = cv2.imread(os.path.join(image_folder, images[0]))
     height, width, layers = frame.shape
 
+
+    print("creating video")
     video = cv2.VideoWriter(video_name, 0, 10, (width,height))
 
     for image in images:
         video.write(cv2.imread(os.path.join(image_folder, image)))
 
     cv2.destroyAllWindows()
+    print("releasing video")
     video.release()
+    print("done")
 
+
+def load_images(image_folder):
+    images = [img for img in os.listdir(image_folder) if img.endswith(".png")]
+    return images
+
+#Should be included in new class
+def draw_contours():
+    image_folder = r'C:\Users\farri\OneDrive\Escriptori\Hackaton\images'
+    images = load_images(image_folder);
+
+    print("images loaded")
+
+    #image = images[0]
+
+    image = Image.open(image_folder + "\\slice_001.png" )
+
+    print(image.format)
+    print(image.size)
+    print(image.mode)
+
+    cv2.imshow('Binary image', asarray(image))
+    cv2.waitKey(0)
+
+    image_gray = cv2.cvtColor(asarray(image), cv2.COLOR_BGR2GRAY)
+
+    ret, thresh = cv2.threshold(image_gray, 75, 255, cv2.THRESH_BINARY)
+    cv2.imshow('Binary image', thresh) 
+    cv2.waitKey(0)
+    cv2.imwrite('image_thres1.jpg', thresh)
+    cv2.destroyAllWindows()
+
+
+
+    
 
 # MAIN starts here
 
-path = "DICOM\\1003\\0W\DICOM OK\\2018-04-12-17-52-41.dcm"
+#path = "DICOM\\1003\\0W\DICOM OK\\2018-04-12-17-52-41.dcm"
+path = "C:\\Users\\farri\\OneDrive\\Escriptori\\Hackaton\\HACKATHON VIDEOS COR 2022\\HACKATHON VIDEOS COR 2022\\DICOM\\1003\\0W\\DICOM OK\\2018-04-12-17-53-27.dcm"
 ds = dcmread(path)
-render_video_from_images()
+#render_video_from_images()
 #render_images(ds)
+draw_contours()
 
 
 
