@@ -189,6 +189,8 @@ def get_variable_from_text(text, variable, separator="\n"):
 
 def analyze_video(path):
     ds = dcmread(path)
+    pixel_spacing = ds.PixelSpacing # [0] x separation between pixels, [1] y separation
+    
     data = DataForm()
     heart_rate_array = []
     for i, slice in enumerate(ds.pixel_array):
@@ -201,6 +203,9 @@ def analyze_video(path):
     print(data.__dict__)
 
 
-analyze_video("DICOM\\1003\\0W\\DICOM OK\\2018-04-12-17-53-27.dcm")
+video = "DICOM\\1003\\0W\\DICOM OK\\2018-04-12-17-53-27.dcm"
+ds = dcmread(video)
+print()
+#analyze_video(video)
 
 
