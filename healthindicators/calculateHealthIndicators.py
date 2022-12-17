@@ -89,8 +89,6 @@ def calculateRelative_wall_thickness(LVPWd, LVIVSd, LVIDd):
 
 def calculateAll(IVSd, IVSs, LVIDd, LVIDs, LVPWd, LVPWs, LVAWd, LVAWs, HR):
     # MISSING VALUES
-    LVIVSd_v = 0
-    BW_v = 0
 
     LVESV_value = calculateLVESV(LVIDs)
     LVEDV_value = calculateLVEDV(LVIDd)
@@ -99,10 +97,10 @@ def calculateAll(IVSd, IVSs, LVIDd, LVIDs, LVPWd, LVPWs, LVAWd, LVAWs, HR):
     LV_mass_value = calculateLV_mass(LVIDd, LVAWd, LVPWd)
     SV_value = calculateStroke_volume(LVEDV_value, LVESV_value)
     CO_value = calculateCardiac_output(SV_value, HR)
-    RWT_value = calculateRelative_wall_thickness(LVPWd,"""LVIVSd""",LVIDd)
+    RWT_value = calculateRelative_wall_thickness(LVPWd,IVSd,LVIDd)
     
 
-    compareHI.compareAll(BW_v, HR, LV_mass_value, LVPWd, LVPWs, LVIDs, LVIDd, IVSd, IVSs, LVESV_value, LVEDV_value, EF_value, FS_value, SV_value, CO_value)
+    compareHI.compareAll(25, HR, LV_mass_value, LVPWd, LVPWs, LVIDs, LVIDd, IVSd, IVSs, LVESV_value, LVEDV_value, EF_value, FS_value, SV_value, CO_value)
     return
 
 
