@@ -11,17 +11,26 @@ def get_total_value_and_valid_iterations (distance_array):
 
 def getd_and_s_array(mid_margin, mid_array):
     d_and_s_array = []
+    counter = 0
+    counter2 = 0
 
     for distance in mid_array:
         if (distance is not None):
             if (distance >= mid_margin[1]):
                 d_and_s_array.append['d']
+                counter = counter + 1
             elif (distance <= mid_margin[0]):
                 d_and_s_array.append['s']
+                counter = counter + 1
             else:
                 d_and_s_array.append[None]
         else:
             d_and_s_array.append[None]
+            counter2 = counter2 + 1
+
+    print("None values: " + counter2)
+    print("Included values: " + counter)
+    return d_and_s_array
 
 def get_d_and_s_means(distance_array, d_and_s_array):
     d_total = 0
