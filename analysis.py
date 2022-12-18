@@ -11,6 +11,7 @@ from numpy import asarray
 import pytesseract
 from itertools import chain
 from dotenv import load_dotenv
+import progressbar
 import operator
 import time
 
@@ -23,13 +24,19 @@ pytesseract.pytesseract.tesseract_cmd = os.getenv('TESSERACT_EXE')
 class DataForm: 
     pass
 
+widgets = [
+        '\x1b[33mAnalyzing frames \x1b[39m',
+        progressbar.Percentage(),
+        progressbar.Bar(marker='\x1b[32m#\x1b[39m'),
+    ]
+
 def detect_color(rgb, image, lower_row, max_row, lower_col, max_col, up, right):
     img = image.convert('RGBA')
 
     pixel_position = []
 
-    print(max_col)
-    print(max_row)
+    #print(max_col)
+    #print(max_row)
 
     if (up):
         for row in range(max_row, lower_row, -1):
@@ -92,7 +99,7 @@ def detect_external_color(image, upper_internal_wall, rgb, up):
                 pixel = img.getpixel((col, row))
                 if (pixel[0] == rgb[0] and pixel[1] == rgb[1] and pixel[2] == rgb[2]):
                     if (check_if_external_wall(img, rgb, row - 1, row - 10, max_col - 1, lower_col + 1, True)):
-                        print("Checking")
+                        #print("Checking")
                         pixel_position = (col, row)
                         return pixel_position
     else:
@@ -102,7 +109,7 @@ def detect_external_color(image, upper_internal_wall, rgb, up):
                 pixel = img.getpixel((col, row))
                 if (pixel[0] == rgb[0] and pixel[1] == rgb[1] and pixel[2] == rgb[2]):
                     if (check_if_external_wall(img, rgb, row + 1, row + 10, max_col - 1, lower_col + 1, False)):
-                        print("Checking")
+                        #print("Checking")
                         pixel_position = (col, row)
                         return pixel_position        
 
@@ -143,38 +150,42 @@ def check_if_external_wall(img, rgb, actual_row, last_row, max_col, lower_col, u
 def find_upper_internal_wall(slice_copy_image, rgb):
     pixel_position = detect_color(rgb, slice_copy_image, 280, 335, 650, 700, True, True)
     if (not pixel_position): 
-        print("Yepa")
+        #print("Yepa")
         pixel_position = detect_color(rgb, slice_copy_image, 280, 335, 600, 650, True, False)
 
-    print(pixel_position)
+    #print(pixel_position)
 
     return pixel_position
 
 def find_lower_internal_wall(slice_copy_image, rgb):
     pixel_position = detect_color(rgb, slice_copy_image, 500, 550, 650, 700, False, True)
     if (not pixel_position):
-        print("Yepa")
+        #print("Yepa")
         pixel_position = detect_color(rgb, slice_copy_image, 500, 550, 600, 650, False, False)
     
     return pixel_position
 
 def find_upper_external_wall(slice_copy_image, rgb, upper_internal_wall):
+    if not upper_internal_wall:
+        return None
     upper_internal_wall_list = list(upper_internal_wall)
     upper_internal_wall_list[1] = upper_internal_wall_list[1] - 20
-    print(upper_internal_wall_list)
+    #print(upper_internal_wall_list)
     pixel_position = detect_external_color(slice_copy_image, upper_internal_wall_list, rgb, True)
 
     return pixel_position
 
 def find_lower_external_wall(slice_copy_image, rgb, lower_internal_wall):
+    if not lower_internal_wall:
+        return None
     lower_internal_wall_list = list(lower_internal_wall)
     lower_internal_wall_list[1] = lower_internal_wall_list[1] + 15
-    print(lower_internal_wall_list)
+    #print(lower_internal_wall_list)
     pixel_position = detect_external_color(slice_copy_image, lower_internal_wall_list, rgb, False)
 
     return pixel_position
 
-def draw_countours(slice):
+def draw_countours(slice, pixel_spacing, show = False):
     #cv2.imshow('Binary image', slice)
     #cv2.waitKey(0)
     cv2.destroyAllWindows()
@@ -194,43 +205,51 @@ def draw_countours(slice):
     #cv2.waitKey(0)
     #cv2.imwrite(f'images\\contours_none_image{i:03n}.jpg', slice_copy)
     cv2.destroyAllWindows()
-        
-    cv2.line(slice_copy, (650,800), (650,0), (0,255,255), 1) #650,525 650,300
-    cv2.line(slice_copy, (600,500), (700,500), (0,255,255), 1)
-    cv2.line(slice_copy, (600,335), (700,335), (0,255,255), 1)
-    cv2.imshow('None approximation', slice_copy)
-    cv2.waitKey(0)
+
+    if(show):
+        cv2.line(slice_copy, (650,800), (650,0), (0,255,255), 1) #650,525 650,300
+        cv2.line(slice_copy, (600,500), (700,500), (0,255,255), 1)
+        cv2.line(slice_copy, (600,335), (700,335), (0,255,255), 1)
+        cv2.imshow('None approximation', slice_copy)
+        cv2.waitKey(0)
 
     slice_copy_image = Image.fromarray(slice_copy)
     rgb = (0, 255, 0)
 
 
     upper_internal_wall = find_upper_internal_wall(slice_copy_image, rgb)
-    print(upper_internal_wall)
+    #print(upper_internal_wall)
     upper_external_wall = find_upper_external_wall(slice_copy_image, rgb, upper_internal_wall)
-    print(upper_external_wall)
+    #print(upper_external_wall)
     lower_internal_wall = find_lower_internal_wall(slice_copy_image, rgb)
-    print(lower_internal_wall)
+    #print(lower_internal_wall)
     lower_external_wall = find_lower_external_wall(slice_copy_image, rgb, lower_internal_wall)
-    print(lower_external_wall)
+    #print(lower_external_wall)
 
-    cv2.line(slice_copy, (0,0), upper_internal_wall, (0,255,255), 1)
-    cv2.line(slice_copy, (0,0), lower_internal_wall, (0,255,255), 1)
-    cv2.line(slice_copy, (0,0), upper_external_wall, (0,0,255), 1)
-    cv2.line(slice_copy, (0,0), lower_external_wall, (0,0,255), 1)
-    cv2.imshow('None approximation', slice_copy)
-    cv2.waitKey(0)
+    if(show):
+        cv2.line(slice_copy, (0,0), upper_internal_wall, (0,255,255), 1)
+        cv2.line(slice_copy, (0,0), lower_internal_wall, (0,255,255), 1)
+        cv2.line(slice_copy, (0,0), upper_external_wall, (0,0,255), 1)
+        cv2.line(slice_copy, (0,0), lower_external_wall, (0,0,255), 1)
+        cv2.imshow('None approximation', slice_copy)
+        cv2.waitKey(0)
 
-    upper_box = (550, 200, 750, 350)
-    lower_box = (550, 475, 750, 625)
-    upper_slice_crop = slice_copy_image.crop(upper_box)
-    lower_slice_crop = slice_copy_image.crop(lower_box)
 
-    height = slice_copy_image.height
-    width = slice_copy_image.width
-    print(height)
-    print(width)
+    result = DataForm()
 
+    if not upper_internal_wall or not upper_external_wall or not lower_internal_wall or not lower_external_wall:
+        result.top = None
+        result.mid = None
+        result.bot = None
+    else:
+        result.top = abs(upper_internal_wall[1] - upper_external_wall[1]) * pixel_spacing[1]
+        result.mid = abs(lower_internal_wall[1] - upper_internal_wall[1]) * pixel_spacing[1]
+        result.bot = abs(lower_internal_wall[1] - lower_external_wall[1]) * pixel_spacing[1]
+
+
+    #print(result.__dict__)
+
+    return result
 
 
     #cv2.imshow('None approximation', asarray(upper_slice_crop))
@@ -300,21 +319,34 @@ def analyze_video(path):
     ds = dcmread(path)
     pixel_spacing = ds.PixelSpacing # [0] x separation between pixels, [1] y separation
     
-    data = DataForm()
+    bar = progressbar.ProgressBar(widgets=widgets, max_value=len(ds.pixel_array)).start()
+
+    data_arrays = DataForm()
     heart_rate_array = []
+    data_arrays.top = []
+    data_arrays.mid = []
+    data_arrays.bot = []
     for i, slice in enumerate(ds.pixel_array):
-        #if i % 20 == 0:
-            #heart_rate_array.append(get_heart_rate(slice))
-        if i < 5:
-            draw_countours(slice)
+        
+        if i % 20 == 0:
+            heart_rate_array.append(get_heart_rate(slice))
+
+        result = draw_countours(slice,pixel_spacing)
+        data_arrays.top.append(result.top)
+        data_arrays.mid.append(result.mid)
+        data_arrays.bot.append(result.bot)
+        bar.update(i + 1)
+
+    bar.finish()
+    # call to function
+    data = DataForm() # substitute with data = callfunction(data_arrays)
     data.hr = numpy.mean(heart_rate_array)
 
-    print(data.__dict__)
-
+    print(data.__dict__, len(data_arrays.top))
+    return data
 
 video = "DICOM\\1003\\0W\\DICOM OK\\2018-04-12-17-53-27.dcm"
 ds = dcmread(video)
-print()
 analyze_video(video)
 
 
