@@ -37,8 +37,15 @@ if __name__ == '__main__':
     print('Analysis done.')
 
     print('Analyzing SAX ......')
-    sax = analysis.analyze_video(args.pathsax)
+    sax = analysis.analyze_video(args.pathsax, psla=False)
     print('Analysis done.')
 
     
-    chi.calculateAll(0.98, 1 ,3.85,2.22, 1,1.22,1,1,numpy.mean([psla.hr,sax.hr]))
+    chi.calculateAll(psla.top_d, 
+                    psla.top_s ,
+                    numpy.mean([psla.mid_d]),
+                    numpy.mean([psla.mid_s]), 
+                    numpy.mean([psla.bot_d]),
+                    numpy.mean([psla.bot_s]),
+                    1,
+                    1,numpy.mean([psla.hr,sax.hr]))
