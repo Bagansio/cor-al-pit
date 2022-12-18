@@ -19,7 +19,10 @@ Done with love by
 - [X] Load from DICOM file a video
 - [X] GET contours
 - [X] GET Heart Rate
-- [ ] GET IVS
-- [ ] GET LVID
-- [ ] GET LVPW
-- [ ] GET LVAW
+- [X] GET IVS
+- [X] GET LVID
+- [X] GET LVPW
+- [X] GET LVAW
+- [ ] GET MEDIAN FROM ANALYSIS
+- [X] GET PSLA
+- [ ] GET SAX

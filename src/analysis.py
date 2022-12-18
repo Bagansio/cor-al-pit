@@ -327,9 +327,11 @@ def analyze_video(path):
     data_arrays.mid = []
     data_arrays.bot = []
     for i, slice in enumerate(ds.pixel_array):
-        
+
         if i % 20 == 0:
-            heart_rate_array.append(get_heart_rate(slice))
+            hr = get_heart_rate(slice)
+            if hr is not None:
+             heart_rate_array.append(hr)
 
         result = draw_countours(slice,pixel_spacing)
         data_arrays.top.append(result.top)
@@ -339,14 +341,15 @@ def analyze_video(path):
 
     bar.finish()
     # call to function
-    data = DataForm() # substitute with data = callfunction(data_arrays)
-    data.hr = numpy.mean(heart_rate_array)
+    data = DataForm() # substitute with data = callfunction(data_arrays) 
+    if len(heart_rate_array) > 0:
+        data.hr = numpy.mean(heart_rate_array)
 
-    print(data.__dict__, len(data_arrays.top))
+    #print(data.__dict__, len(data_arrays.top))
     return data
 
-video = "DICOM\\1003\\0W\\DICOM OK\\2018-04-12-17-53-27.dcm"
-ds = dcmread(video)
-analyze_video(video)
+#video = "DICOM\\1003\\0W\\DICOM OK\\2018-04-12-17-53-27.dcm"
+#ds = dcmread(video)
+#analyze_video(video)
 
 

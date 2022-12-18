@@ -1,11 +1,19 @@
 import pandas as pd
-import openpyxl
 import uuid
 import healthIndicatorsUtils as HIUtils
-
+import time
+import os
 
 def healthInformationToExcel(BW, HR, LV_mass, LVPWd, LVPWs, LVIDs, LVIDd, IVSd, IVSs, LVESV, LVEDV, EF, FS, SV, CO, healthyCounter, unhealthyCounter):
-    path = "C:/Users/crist/Desktop/Hackaton/cor-al-pit-excels/healthInformation.xlsx"
+    
+    isExist = os.path.exists('excels')
+    if not isExist:
+        # Create a new directory because it does not exist
+        os.makedirs('excels')
+
+    timestr = time.strftime("%Y_%m_%d-%H_%M_%S")
+    path = f'excels/result-{timestr}.xlsx'
+    
     healthDataFrame = pd.DataFrame(columns=[HIUtils.ID,
                                             HIUtils.BW_NAME, 
                                             HIUtils.HR_NAME, 

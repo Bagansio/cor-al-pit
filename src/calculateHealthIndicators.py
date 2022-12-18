@@ -11,7 +11,7 @@ def calculateLVESV(LVIDs):
     """
     LVESVCalculation = (7/(2.4+LVIDs))*(LVIDs**3)
 
-    return {LVESVCalculation, HIUtils.MICROLITER}
+    return LVESVCalculation#, HIUtils.MICROLITER)
 
 # LVEDV = [7/(2.4+LVIDd)]*(LVIDd^3)
 def calculateLVEDV(LVIDd):
@@ -21,7 +21,7 @@ def calculateLVEDV(LVIDd):
     Returns LVEDV value and it symbol (μL)
     """
     LVEDVCalculation = (7/(2.4+LVIDd))*(LVIDd**3)
-    return {LVEDVCalculation, HIUtils.MICROLITER}
+    return LVEDVCalculation#, HIUtils.MICROLITER)
 
 # FS(%) = (LVIDd-LVIDs)/LVIDd*100
 def calculateFS(LVIDd, LVIDs):
@@ -31,7 +31,7 @@ def calculateFS(LVIDd, LVIDs):
     Returns FS value and it symbol (%)
     """
     FSCalculation = ((LVIDd-LVIDs)/LVIDd)*100
-    return {FSCalculation, HIUtils.PERCENTAGE}
+    return FSCalculation#, HIUtils.PERCENTAGE)
 
 # EF(%) = (LVEDV-LVESV)/LVEDV*100
 def calculateEF(LVEDV, LVESV):
@@ -41,7 +41,7 @@ def calculateEF(LVEDV, LVESV):
     Returns EF value and it symbol (%)
     """
     EFCalculation = ((LVEDV-LVESV)/LVEDV)*100
-    return {EFCalculation, HIUtils.PERCENTAGE}
+    return EFCalculation#, HIUtils.PERCENTAGE(
 
 # LV mass (mg) = 1.04[(LVIDd+LVAWd+LVPWd)^3-(LVIDd^3)]*0.8+0.6
 def calculateLV_mass(LVIDd, LVAWd, LVPWd):
@@ -51,8 +51,8 @@ def calculateLV_mass(LVIDd, LVAWd, LVPWd):
     Returns LV mass value and it symbol (mg)
 
     """
-    LV_massCalculation = 1.04((((LVIDd+LVAWd+LVPWd)**3)-(LVIDd**3))*0.8)+0.6
-    return {LV_massCalculation, HIUtils.MILLIGRAMS}
+    LV_massCalculation = 1.04*((((LVIDd+LVAWd+LVPWd)**3)-(LVIDd**3))*0.8)+0.6
+    return LV_massCalculation#, HIUtils.MILLIGRAMS}
 
 # Stroke volume, SV (μL) = (LVEDV-LVESV)
 def calculateStroke_volume(LVEDV, LVESV):
@@ -63,18 +63,18 @@ def calculateStroke_volume(LVEDV, LVESV):
 
     """
     SVCalculation = (LVEDV-LVESV)
-    return {SVCalculation, HIUtils.MICROLITER}
+    return SVCalculation#, HIUtils.MICROLITER}
 
 # Cardiac output : CO(μL/min) = SV*HR
 def calculateCardiac_output(SV, HR):
     """
     CALCULATE Cardiac output : CO(μL/min) = SV*HR
     
-    Returns Cardiac output and it symbol (μL/min)
+    Returns Cardiac output and it symbol (mL/min)
 
     """
-    COCalculation = SV*HR
-    return {COCalculation, HIUtils.MICROLITERPERMINUTE}
+    COCalculation = SV*HR/1000
+    return COCalculation#, HIUtils.MICROLITERPERMINUTE}
 
 # Relative wall thickness: RWT = (LVPWd+LVIVSd)/(LVIDd)
 def calculateRelative_wall_thickness(LVPWd, LVIVSd, LVIDd):
