@@ -14,7 +14,7 @@ Done with love by
 ### TO DO
 
 
-- [ ] main.py
+- [X] main.py
 - [X] Load DICOM files
 - [X] Load from DICOM file a video
 - [X] GET contours
@@ -23,6 +23,6 @@ Done with love by
 - [X] GET LVID
 - [X] GET LVPW
 - [X] GET LVAW
-- [ ] GET MEDIAN FROM ANALYSIS
+- [X] GET MEDIAN FROM ANALYSIS
 - [X] GET PSLA
 - [ ] GET SAX

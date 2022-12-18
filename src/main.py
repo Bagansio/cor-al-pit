@@ -37,7 +37,7 @@ if __name__ == '__main__':
     print('Analysis done.')
 
     print('Analyzing SAX ......')
-    sax = analysis.analyze_video(args.pathsax, psla=False)
+    sax = analysis.analyze_video(args.pathsax)#, psla=False)
     print('Analysis done.')
 
     

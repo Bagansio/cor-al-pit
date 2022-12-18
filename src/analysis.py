@@ -148,28 +148,27 @@ def check_if_external_wall(img, rgb, actual_row, last_row, max_col, lower_col, u
 
 
 
-def find_upper_internal_wall(slice_copy_image, rgb, psla):
+def find_upper_internal_wall(slice_copy_image, rgb):
 
-    if psla:
 
-        pixel_position = detect_color(rgb, slice_copy_image, 280, 335, 650, 700, True, True)
-        if (not pixel_position): 
-            #print("Yepa")
-            pixel_position = detect_color(rgb, slice_copy_image, 280, 335, 600, 650, True, False)
+    pixel_position = detect_color(rgb, slice_copy_image, 280, 335, 650, 700, True, True)
+    if (not pixel_position): 
+        #print("Yepa")
+        pixel_position = detect_color(rgb, slice_copy_image, 280, 335, 600, 650, True, False)
 
-    #else:
+    #else:S
 
     #print(pixel_position)
 
     return pixel_position
 
-def find_lower_internal_wall(slice_copy_image, rgb, psla):
+def find_lower_internal_wall(slice_copy_image, rgb):
 
-    if psla:
-        pixel_position = detect_color(rgb, slice_copy_image, 500, 550, 650, 700, False, True)
-        if (not pixel_position):
-            #print("Yepa")
-            pixel_position = detect_color(rgb, slice_copy_image, 500, 550, 600, 650, False, False)
+
+    pixel_position = detect_color(rgb, slice_copy_image, 500, 550, 650, 700, False, True)
+    if (not pixel_position):
+        #print("Yepa")
+        pixel_position = detect_color(rgb, slice_copy_image, 500, 550, 600, 650, False, False)
     #else:
     
     return pixel_position
@@ -194,7 +193,7 @@ def find_lower_external_wall(slice_copy_image, rgb, lower_internal_wall):
 
     return pixel_position
 
-def draw_countours(slice, pixel_spacing, psla, show = False):
+def draw_countours(slice, pixel_spacing, show = False):
     #cv2.imshow('Binary image', slice)
     #cv2.waitKey(0)
     cv2.destroyAllWindows()
@@ -216,20 +215,19 @@ def draw_countours(slice, pixel_spacing, psla, show = False):
     cv2.destroyAllWindows()
 
     if show:
-        if psla:
-            cv2.line(slice_copy, (650,800), (650,0), (0,255,255), 1) #650,525 650,300
-            cv2.line(slice_copy, (600,500), (700,500), (0,255,255), 1)
-            cv2.line(slice_copy, (600,335), (700,335), (0,255,255), 1)
-            cv2.imshow('None approximation', slice_copy)
-            cv2.waitKey(0)
+        cv2.line(slice_copy, (650,800), (650,0), (0,255,255), 1) #650,525 650,300
+        cv2.line(slice_copy, (600,500), (700,500), (0,255,255), 1)
+        cv2.line(slice_copy, (600,335), (700,335), (0,255,255), 1)
+        cv2.imshow('None approximation', slice_copy)
+        cv2.waitKey(0)
         #else:
     slice_copy_image = Image.fromarray(slice_copy)
     rgb = (0, 255, 0)
 
 
-    upper_internal_wall = find_upper_internal_wall(slice_copy_image, rgb, psla)
+    upper_internal_wall = find_upper_internal_wall(slice_copy_image, rgb)
     upper_external_wall = find_upper_external_wall(slice_copy_image, rgb, upper_internal_wall)
-    lower_internal_wall = find_lower_internal_wall(slice_copy_image, rgb, psla)
+    lower_internal_wall = find_lower_internal_wall(slice_copy_image, rgb)
     lower_external_wall = find_lower_external_wall(slice_copy_image, rgb, lower_internal_wall)
     """
     print(upper_internal_wall)
@@ -239,13 +237,12 @@ def draw_countours(slice, pixel_spacing, psla, show = False):
     """
     if show:
 
-        if psla:
-            cv2.line(slice_copy, (0,0), upper_internal_wall, (0,255,255), 1)
-            cv2.line(slice_copy, (0,0), lower_internal_wall, (0,255,255), 1)
-            cv2.line(slice_copy, (0,0), upper_external_wall, (0,0,255), 1)
-            cv2.line(slice_copy, (0,0), lower_external_wall, (0,0,255), 1)
-            cv2.imshow('None approximation', slice_copy)
-            cv2.waitKey(0)
+        cv2.line(slice_copy, (0,0), upper_internal_wall, (0,255,255), 1)
+        cv2.line(slice_copy, (0,0), lower_internal_wall, (0,255,255), 1)
+        cv2.line(slice_copy, (0,0), upper_external_wall, (0,0,255), 1)
+        cv2.line(slice_copy, (0,0), lower_external_wall, (0,0,255), 1)
+        cv2.imshow('None approximation', slice_copy)
+        cv2.waitKey(0)
         #else:
 
     result = DataForm()
@@ -328,7 +325,7 @@ def get_variable_from_text(text, variable, separator="\n"):
         return None
     
 
-def analyze_video(path, psla = True):
+def analyze_video(path):
     ds = dcmread(path)
     pixel_spacing = ds.PixelSpacing # [0] x separation between pixels, [1] y separation
     
@@ -346,7 +343,7 @@ def analyze_video(path, psla = True):
             if hr is not None:
              heart_rate_array.append(hr)
 
-        result = draw_countours(slice,pixel_spacing,psla)
+        result = draw_countours(slice,pixel_spacing)
         data_arrays.top.append(result.top)
         data_arrays.mid.append(result.mid)
         data_arrays.bot.append(result.bot)
@@ -358,7 +355,7 @@ def analyze_video(path, psla = True):
     if len(heart_rate_array) > 0:
         data.hr = numpy.mean(heart_rate_array)
 
-    print(data.__dict__, len(data_arrays.top))
+    #print(data.__dict__, len(data_arrays.top))
     return data
 
 #video = "DICOM\\1003\\0W\\DICOM OK\\2018-04-12-17-53-27.dcm"

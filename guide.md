@@ -6,6 +6,9 @@ REQUIREMENTS:
 
 - Python3
 - Pref. Linux (Virtual, WSL, ...)
+- Theseract (https://tesseract-ocr.github.io/)
+
+- .env file (with variable: TESSERACT_EXE=<path_to_theseract.exe>)
 
 
 
