@@ -228,5 +228,5 @@ def compareAll(BW, HR, LV_mass, LVPWd, LVPWs, LVIDs, LVIDd, IVSd, IVSs, LVESV, L
 
 
 
-compareAll(1,500,1,1,1,1.8,3.5,0.7,1,12,50,61,35,30,15)
+#compareAll(1,500,1,1,1,1.8,3.5,0.7,1,12,50,61,35,30,15)
 

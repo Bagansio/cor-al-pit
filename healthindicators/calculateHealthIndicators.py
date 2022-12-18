@@ -1,5 +1,5 @@
 import healthIndicatorsUtils as HIUtils
-
+import compareHealthIndicators as compareHI
 ####### CALCULATIONS TO KNOW THE HEALTH INDICATORS #######
 
 # LVESV = [7/(2.4+LVIDs)]*(LVIDs^3)
@@ -86,5 +86,25 @@ def calculateRelative_wall_thickness(LVPWd, LVIVSd, LVIDd):
     """
     RWTCalculation = (LVPWd+LVIVSd)/(LVIDd)
     return RWTCalculation
+
+def calculateAll(IVSd, IVSs, LVIDd, LVIDs, LVPWd, LVPWs, LVAWd, LVAWs, HR):
+    # MISSING VALUES
+
+    LVESV_value = calculateLVESV(LVIDs)
+    LVEDV_value = calculateLVEDV(LVIDd)
+    FS_value = calculateFS(LVIDd, LVIDs)
+    EF_value = calculateEF(LVEDV_value,LVESV_value)
+    LV_mass_value = calculateLV_mass(LVIDd, LVAWd, LVPWd)
+    SV_value = calculateStroke_volume(LVEDV_value, LVESV_value)
+    CO_value = calculateCardiac_output(SV_value, HR)
+    RWT_value = calculateRelative_wall_thickness(LVPWd,IVSd,LVIDd)
+    
+
+    compareHI.compareAll(25, HR, LV_mass_value, LVPWd, LVPWs, LVIDs, LVIDd, IVSd, IVSs, LVESV_value, LVEDV_value, EF_value, FS_value, SV_value, CO_value)
+    return
+
+
+
+
 
 
