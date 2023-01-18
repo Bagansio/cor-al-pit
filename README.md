@@ -11,18 +11,19 @@ Done with love by
 | Artur Farriols | arturfarriols        |
 
 
-### TO DO
+## HOW IT WORKS
+
+When a DICOM file is load the program analyze the ecography.
+
+![Image](./docs/image.PNG)
+
+We get that image and we add some noise to create the contours:
 
 
-- [X] main.py
-- [X] Load DICOM files
-- [X] Load from DICOM file a video
-- [X] GET contours
-- [X] GET Heart Rate
-- [X] GET IVS
-- [X] GET LVID
-- [X] GET LVPW
-- [X] GET LVAW
-- [X] GET MEDIAN FROM ANALYSIS
-- [X] GET PSLA
-- [ ] GET SAX
+![Contours](./docs/contours.PNG)
+
+After that we apply an algorithm to identify the needed heart points to calculate the variables:
+
+![Contours](./docs/AlgorithmPNG.PNG)
+
+Also we are using Tesseract to obtain the beats per minute
