@@ -325,11 +325,12 @@ def get_variable_from_text(text, variable, separator="\n"):
         return None
     
 
-def analyze_video(path):
+def analyze_video(path, print_it = False):
     ds = dcmread(path)
     pixel_spacing = ds.PixelSpacing # [0] x separation between pixels, [1] y separation
     
-    bar = progressbar.ProgressBar(widgets=widgets, max_value=len(ds.pixel_array)).start()
+    if(print_it):
+        bar = progressbar.ProgressBar(widgets=widgets, max_value=len(ds.pixel_array)).start()
 
     data_arrays = DataForm()
     heart_rate_array = []
@@ -347,9 +348,11 @@ def analyze_video(path):
         data_arrays.top.append(result.top)
         data_arrays.mid.append(result.mid)
         data_arrays.bot.append(result.bot)
-        bar.update(i + 1)
+        if(print_it):
+            bar.update(i + 1)
 
-    bar.finish()
+    if(print_it):
+        bar.finish()
     # call to function
     data = cardiac_cycle(data_arrays) 
     if len(heart_rate_array) > 0:

@@ -98,7 +98,7 @@ HEALTHY_INDICATORS = "Healhy indicators counter"
 
 
 #Check the interval to know if is healthy or unhealthy and prints it
-def checkInterval(negativeInterval, positiveInterval, value, name):
+def checkInterval(negativeInterval, positiveInterval, value, name, print_it = False):
     negativeInterval = round(negativeInterval, 2)
     positiveInterval = round(positiveInterval, 2)
     healthy = True
@@ -119,16 +119,17 @@ def checkInterval(negativeInterval, positiveInterval, value, name):
         pr = pr + " "+ (RED_TEXT+str(value)+NORMAL_TEXT)
         healthy = False
     
-    print(pr)
+    if(print_it):
+        print(pr)
 
-    if(healthy): print("VALUE IS" + GREEN_TEXT+ " HEALTHY!"+NORMAL_TEXT+"\n") 
-    else: print("VALUE IS" + RED_TEXT+ " UNHEALTHY!"+NORMAL_TEXT+"\n") 
+        if(healthy): print("VALUE IS" + GREEN_TEXT+ " HEALTHY!"+NORMAL_TEXT+"\n") 
+        else: print("VALUE IS" + RED_TEXT+ " UNHEALTHY!"+NORMAL_TEXT+"\n") 
     
 
     return healthy
 
 #Print de total of healthy and unhealthy indicators and if the patient has a healthy or unhealthy heart
-def printRecountIndicators(healthyCont, unhealthyCont):
+def printRecountIndicators(healthyCont, unhealthyCont,):
     print("TOTAL HEALTHY INDICATORS: "+ str(healthyCont))
     print("TOTAL UNHEALTHY INDICATORS: "+ str(unhealthyCont))
 

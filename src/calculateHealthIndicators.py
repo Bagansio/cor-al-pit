@@ -1,5 +1,6 @@
 import healthIndicatorsUtils as HIUtils
 import compareHealthIndicators as compareHI
+import json
 ####### CALCULATIONS TO KNOW THE HEALTH INDICATORS #######
 
 # LVESV = [7/(2.4+LVIDs)]*(LVIDs^3)
@@ -87,7 +88,7 @@ def calculateRelative_wall_thickness(LVPWd, LVIVSd, LVIDd):
     RWTCalculation = (LVPWd+LVIVSd)/(LVIDd)
     return RWTCalculation
 
-def calculateAll(IVSd, IVSs, LVIDd, LVIDs, LVPWd, LVPWs, LVAWd, LVAWs, HR):
+def calculateAll(IVSd, IVSs, LVIDd, LVIDs, LVPWd, LVPWs, LVAWd, LVAWs, HR, print_it = False):
     # MISSING VALUES
 
     LVESV_value = calculateLVESV(LVIDs)
@@ -99,10 +100,23 @@ def calculateAll(IVSd, IVSs, LVIDd, LVIDs, LVPWd, LVPWs, LVAWd, LVAWs, HR):
     CO_value = calculateCardiac_output(SV_value, HR)
     RWT_value = calculateRelative_wall_thickness(LVPWd,IVSd,LVIDd)
     
+    json_response = {'LVESV': LVESV_value, 
+                       'LVEDV': LVEDV_value,
+                       'FS': FS_value,
+                       'EF': EF_value,
+                       'LV_MASS': LV_mass_value,
+                       'SV': SV_value,
+                       'CO': CO_value,
+                       'RWT': RWT_value}
 
-    compareHI.compareAll(25, HR, LV_mass_value, LVPWd, LVPWs, LVIDs, LVIDd, IVSd, IVSs, LVESV_value, LVEDV_value, EF_value, FS_value, SV_value, CO_value)
-    return
+    
 
+    result = compareHI.compareAll(25, HR, LV_mass_value, LVPWd, LVPWs, LVIDs, LVIDd, IVSd, IVSs, LVESV_value, LVEDV_value, EF_value, FS_value, SV_value, CO_value, print_it)
+    json_response['healthy_num'] = result[0]
+    json_response['unhealthy_num'] = result[1]
+
+    if(not print_it):
+        print(json.dumps(json_response))
 
 
 

@@ -31,8 +31,8 @@ def getd_and_s_array(mid_margin, mid_array):
             d_and_s_array.append(None)
             counter2 = counter2 + 1
 
-    print(f'None values: {counter2}')
-    print(f'Included values: {counter}')
+    #print(f'None values: {counter2}')
+    #print(f'Included values: {counter}')
     return d_and_s_array
 
 def get_d_and_s_means(distance_array, d_and_s_array):

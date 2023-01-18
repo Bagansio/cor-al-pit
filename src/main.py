@@ -18,6 +18,7 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument('-pl','--pathpsla', type=dir_path, help= "the path to the dicom file of PSLA", required=True)
 parser.add_argument('-ps','--pathsax', type=dir_path, help= "the path to the dicom file of SAX", required=True)
+parser.add_argument('-j', '--json', help= "if output is json", required=False, action='store_true')
 
 def parse():
     return parser.parse_args()
@@ -31,16 +32,21 @@ def main(path):
 
 if __name__ == '__main__':
     args = parser.parse_args()
+    print_it = not args.json
+    if(print_it):
+        print('Analyzing PSLA ......')
+    psla = analysis.analyze_video(args.pathpsla, print_it)
+    if(print_it):
+        print('Analysis done.')
 
-    print('Analyzing PSLA ......')
-    psla = analysis.analyze_video(args.pathpsla)
-    print('Analysis done.')
-
-    print('Analyzing SAX ......')
-    sax = analysis.analyze_video(args.pathsax)#, psla=False)
-    print('Analysis done.')
+    if(print_it):
+        print('Analyzing SAX ......')
+    sax = analysis.analyze_video(args.pathsax, print_it)#, psla=False)
+    if(print_it):
+        print('Analysis done.')
 
     
+
     chi.calculateAll(psla.top_d, 
                     psla.top_s ,
                     numpy.mean([psla.mid_d]),
@@ -48,4 +54,4 @@ if __name__ == '__main__':
                     numpy.mean([psla.bot_d]),
                     numpy.mean([psla.bot_s]),
                     1,
-                    1,numpy.mean([psla.hr,sax.hr]))
+                    1,numpy.mean([psla.hr,sax.hr]), print_it)
